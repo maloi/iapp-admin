@@ -12,7 +12,7 @@ logs/
 
 # Specific files #
 ##################
-local_settings.py
+*_settings.py
 
 # OS generated files #
 ######################
