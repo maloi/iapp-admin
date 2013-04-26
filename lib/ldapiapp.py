@@ -37,6 +37,44 @@ class LdapIapp:
     
     def getPeopleInfo(self, uid):
         result = self.getEntries('ou=People,dc=iapp-intern,dc=de', 'uid=' + uid, ['uid', 'cn'])
+        return result[0]
+    
+    def getMaillist(self):
+        entries = self.getEntries('ou=Mailinglists,dc=iapp-intern,dc=de', 'cn=*', ['cn', ])
+        list_entries = []
+        for value in entries:
+            list_entries.append(value['cn'][0])
+        result = {'name' : list_entries, 'count' : len(list_entries)}
+        return result
+
+    def getMaillistInfo(self, list):
+        maillist = self.getEntries('ou=Mailinglists,dc=iapp-intern,dc=de', 'cn=' + list, ['cn', 'mail', 'owner', 'member'])
+        peoples = self.getPeople()
+        result = {'owner' : [], 'members' : []}
+        for k, v in maillist[0].items():
+            if k == 'member':
+                for value in v:
+                    user = value.split(',')
+                    uid = user[0][4:]
+                    if uid in peoples:
+                        result['members'].append(peoples[uid]['cn'])
+                    else:
+                        pass
+            elif k == 'owner':
+                for value in v:
+                    user = value.split(',')
+                    uid = user[0][4:]
+                    if uid in peoples:
+                        result['owner'].append(peoples[uid]['cn'])
+                    else:
+                        pass
+            elif k == 'mail':
+                result['mail'] = v
+            elif k == 'cn':
+                result['cn'] = v
+            else:
+                #errorhandlig
+                pass
         return result
     
     # Sortierung der Informationen aller Art
@@ -48,3 +86,4 @@ class LdapIapp:
             else:
                 continue
         return result
+        
