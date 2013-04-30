@@ -7,6 +7,6 @@ def index(request):
     return HttpResponse(output)
 
 def user(request, uid):
-    user = User.get_by_uid(uid)
+    user = User.get_by_uid(uid, ['uid', 'cn'])
     output = user.uid + ' ' + user.cn
     return HttpResponse(output)
