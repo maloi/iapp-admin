@@ -6,42 +6,8 @@ class User():
     MULTIVALUE_ATTRS = ['objectclass']
 
     def __init__(self, *args, **kwargs):
-        self._uid        = kwargs.get('uid', "")
-        self._cn         = kwargs.get('cn', "")
-        self._uid_number = kwargs.get('uid_number', "")
-        self._gid_number = kwargs.get('gid_number', "")
-
-    @property
-    def uid(self):
-        return self._uid
-
-    @uid.setter
-    def uid(self, value):
-        self._uid = value
-
-    @property
-    def cn(self):
-        return self._cn
-
-    @cn.setter
-    def cn(self, value):
-        self._cn = value
-
-    @property
-    def uid_number(self):
-        return self._uid_number
-
-    @uid_number.setter
-    def uid_number(self, value):
-        self._uid_number = value
-
-    @property
-    def gid_number(self):
-        return self._gid_number
-
-    @gid_number.setter
-    def gid_number(self, value):
-        self._gid_number = value
+        for key, value in kwargs.items():
+            setattr(self, key, value)
 
     @staticmethod
     def all(attributes = []):
@@ -68,11 +34,15 @@ class User():
 
 def user_from_ldap(search_result, attributes):
     kwargs = {}
-    for attr in attributes:
-        result_value = search_result.get(attr, [''])
-        if attr in User.MULTIVALUE_ATTRS:
-            kwargs[attr] = search_result.get(attr, [''])
+    get_all = False
+    if len(attributes) == 0:
+        get_all = True
+    for key, value in search_result.items():
+        if not key in User.MULTIVALUE_ATTRS:
+            value = value[0]
+        if not get_all and key in attributes:
+            kwargs[key] = value
         else:
-            kwargs[attr] = search_result.get(attr, [''])[0]
+            kwargs[key] = value
     return User(**kwargs)
 
