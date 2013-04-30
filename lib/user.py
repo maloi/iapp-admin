@@ -25,12 +25,6 @@ class User():
         user = search_result[0]
         return user_from_ldap(user, attributes)
 
-    def __unicode__(self):
-        return "{0}".format(self._uid)
-
-    def __str__(self):
-        return "{0}".format(self._uid)
-
 
 def user_from_ldap(search_result, attributes):
     kwargs = {}
