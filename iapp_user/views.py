@@ -3,12 +3,12 @@ from django.http import HttpResponse
 from lib.user import User
 
 def index(request):
-    users = User.all()
+    users = User.all(['cn','uid'])
     output = ''
     for user in users:
         output += user.uid + ' '
-        if hasattr(user, 'cn'):
-            output += user.cn + '<br>'
+        #if hasattr(user, 'cn'):
+        output += user.cn + '<br>'
     return HttpResponse(output)
 
 def user(request, uid):

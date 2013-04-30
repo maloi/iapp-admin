@@ -36,7 +36,10 @@ def user_from_ldap(search_result, attributes):
             value = value[0]
         if not get_all and key in attributes:
             kwargs[key] = value
+            attributes = [x for x in attributes if x != key]
         else:
             kwargs[key] = value
+        for key in attributes:
+            kwargs[key] = ''
     return User(**kwargs)
 
