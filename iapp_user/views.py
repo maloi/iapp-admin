@@ -1,8 +1,7 @@
 from django.http import HttpResponse
 
-from lib.ldapiapp import LdapIapp
+from lib.user import User
 
 def index(request):
-    ldap = LdapIapp()
-    output = ldap.getPeople()
+    output = User.all()
     return HttpResponse(output)

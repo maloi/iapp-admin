@@ -52,12 +52,12 @@ class User():
         ldap = LdapIapp()
         search_result = ldap.getEntries(settings.LDAP_USER_DN, 'uid=*', ['uid', 'cn'])
         for user in search_result:
-            cn = user.get('cn', '')
-            uid = user.get('uid', '')
-            users.append(User(cn, uid))
+            cn = user.get('cn', [''])
+            uid = user.get('uid', [''])
+            users.append(User(uid[0], cn[0]))
         return users
 
     def __unicode__(self):
         return "{0}".format(self._uid)
-    #def __str__(self):
-    #    return self._uid
+    def __str__(self):
+        return "{0}".format(self._uid)
