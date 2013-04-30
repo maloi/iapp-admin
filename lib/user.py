@@ -57,6 +57,15 @@ class User():
             users.append(User(uid[0], cn[0]))
         return users
 
+    @staticmethod
+    def get_by_uid(uid):
+        ldap = LdapIapp()
+        search_result = ldap.getEntries(settings.LDAP_USER_DN, 'uid={0}'.format(uid), ['uid', 'cn'])
+        user = search_result[0]
+        cn = user.get('cn', [''])
+        uid = user.get('uid', [''])
+        return User(uid[0], cn[0])
+
     def __unicode__(self):
         return "{0}".format(self._uid)
     def __str__(self):
