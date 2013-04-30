@@ -3,6 +3,8 @@ from django.conf import settings
 
 class User():
 
+    MULTIVALUE_ATTRS = ['objectclass']
+
     def __init__(self, *args, **kwargs):
         self._uid        = kwargs.get('uid', "")
         self._cn         = kwargs.get('cn', "")
@@ -67,6 +69,10 @@ class User():
 def user_from_ldap(search_result, attributes):
     kwargs = {}
     for attr in attributes:
-        kwargs[attr] = search_result.get(attr, [''])[0]
+        result_value = search_result.get(attr, [''])
+        if attr in User.MULTIVALUE_ATTRS:
+            kwargs[attr] = search_result.get(attr, [''])
+        else:
+            kwargs[attr] = search_result.get(attr, [''])[0]
     return User(**kwargs)
 
