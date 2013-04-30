@@ -3,16 +3,13 @@ from django.conf import settings
 
 class User():
 
-    def __init__(self,
-                 uid,
-                 cn,
-                 uid_number='',
-                 gid_number='',
-                ):
-        self._uid        = uid
-        self._cn         = cn
-        self._uid_number = uid_number
-        self._gid_number = gid_number
+    MULTIVALUE_ATTRS = ['objectclass']
+
+    def __init__(self, *args, **kwargs):
+        self._uid        = kwargs.get('uid', "")
+        self._cn         = kwargs.get('cn', "")
+        self._uid_number = kwargs.get('uid_number', "")
+        self._gid_number = kwargs.get('gid_number', "")
 
     @property
     def uid(self):
@@ -47,17 +44,35 @@ class User():
         self._gid_number = value
 
     @staticmethod
-    def all():
+    def all(attributes = []):
         users = []
         ldap = LdapIapp()
-        search_result = ldap.getEntries(settings.LDAP_USER_DN, 'uid=*', ['uid', 'cn'])
+        search_result = ldap.getEntries(settings.LDAP_USER_DN, 'uid=*', attributes)
         for user in search_result:
-            cn = user.get('cn', [''])
-            uid = user.get('uid', [''])
-            users.append(User(uid[0], cn[0]))
+            users.append(user_from_ldap(user, attributes))
         return users
+
+    @staticmethod
+    def get_by_uid(uid, attributes = []):
+        ldap = LdapIapp()
+        search_result = ldap.getEntries(settings.LDAP_USER_DN, 'uid={0}'.format(uid), attributes)
+        user = search_result[0]
+        return user_from_ldap(user, attributes)
 
     def __unicode__(self):
         return "{0}".format(self._uid)
+
     def __str__(self):
         return "{0}".format(self._uid)
+
+
+def user_from_ldap(search_result, attributes):
+    kwargs = {}
+    for attr in attributes:
+        result_value = search_result.get(attr, [''])
+        if attr in User.MULTIVALUE_ATTRS:
+            kwargs[attr] = search_result.get(attr, [''])
+        else:
+            kwargs[attr] = search_result.get(attr, [''])[0]
+    return User(**kwargs)
+
