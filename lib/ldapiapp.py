@@ -20,9 +20,9 @@ class LdapIapp:
         self.lcon.unbind()
      
     # allgemeingueltige suche, angabe aller parameter bei aufruf
-    def getEntries(self, basedn, filter, attributes):
+    def getEntries(self, basedn, filters, attributes):
         try:
-            r = self.lcon.search_s(basedn, self.scope, filter, attributes)
+            r = self.lcon.search_s(basedn, self.scope, filters, attributes)
             result = []
             for values in r:
                 result.append(values[1])
