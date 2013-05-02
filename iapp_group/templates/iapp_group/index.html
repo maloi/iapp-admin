@@ -1,0 +1,21 @@
+{% if all_group %}
+    <ul>
+        {% for group in all_group %}
+            <li><a href='/group/{{ group.cn }}/'>{{ group.cn }}</a></li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% if info_group %}
+    {{ info_group.cn }}<br />
+    {{ info_group.gidNumber }}<br />
+    <ul>
+    {% for uid in info_group.memberUid %}
+        {% for user in info_user %}
+            {% if uid in user.uid %}
+                <li>{{ user.cn }} {{ uid }}</li>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+    </ul>
+{% endif %}
