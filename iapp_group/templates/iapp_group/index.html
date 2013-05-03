@@ -1,21 +1,41 @@
+{% load staticfiles %}
+<link rel='stylesheet' type='text/css' href='{% static "iapp_group/style.css" %}' />
+
 {% if all_group %}
-    <ul>
-        {% for group in all_group %}
-            <li><a href='/group/{{ group.cn }}/'>{{ group.cn }}</a></li>
-        {% endfor %}
-    </ul>
+    <div id='liste'>
+        <h1>Gruppen&uuml;bersicht</h1>
+        <ul>
+            {% for group in all_group %}
+                <li><a href='/group/{{ group.cn }}/'>{{ group.cn }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id='info_group'>
+    </div>
 {% endif %}
 
-{% if info_group %}
-    {{ info_group.cn }}<br />
-    {{ info_group.gidNumber }}<br />
-    <ul>
-    {% for uid in info_group.memberUid %}
-        {% for user in info_user %}
-            {% if uid in user.uid %}
-                <li>{{ user.cn }} {{ uid }}</li>
-            {% endif %}
-        {% endfor %}
-    {% endfor %}
-    </ul>
+{% if groups %}
+<div>
+    <div id='main'>
+        <div id='left'>
+            <div id='row'><b>Gruppenname:</b></div>
+            <div id='row'><b>Gruppennummer:</b></div>
+            <div id='row'><b>Mitglieder: </b></div>
+        </div>
+        <div id='right'>
+            <div id='row'><b>{{ groups.cn }}</b></div>
+            <div id='row'><b>{{ groups.gidNumber }}</b></div>
+            <div id='row'><ul>
+            {% for uid in groups.memberUid %}
+                {% for user in users %}
+                    {% if uid == user.uid %}
+                        <li><a href='/user/{{ user.uid }}'>{{ user.cn }} {{ user.uid }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            </ul></div>
+        </div>
+    </div>
+    <a href='/group/'>zur&uuml;ck</a>
+</div>
 {% endif %}

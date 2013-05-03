@@ -13,7 +13,7 @@ class User():
     def all(attributes = []):
         users = []
         ldap = LdapIapp()
-        search_result = ldap.getEntries(settings.LDAP_USER_DN, 'uid=*', attributes)
+        search_result = ldap.getEntries(settings.LDAP_USER_DN, '(uid=*)', attributes)
         for user in search_result:
             users.append(user_from_ldap(user, attributes))
         return users

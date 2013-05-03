@@ -13,7 +13,7 @@ class Group():
     def all(attributes = []):
         groups = []
         ldap = LdapIapp()
-        search_result = ldap.getEntries(settings.LDAP_GROUP_DN, 'cn=*', attributes)
+        search_result = ldap.getEntries(settings.LDAP_GROUP_DN, '(cn=*)', attributes)
         for group in search_result:
             groups.append(group_from_ldap(group, attributes))
         return groups
