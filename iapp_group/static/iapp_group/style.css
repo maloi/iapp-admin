@@ -1,0 +1,42 @@
+li a {
+    color: #ff0000;
+}
+
+#liste {
+    width:300px;
+    background-color: #cccccc;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    margin: 0;
+    padding: 0;
+}
+
+div#main {
+    width: 500px;
+    min-height: 500px;
+    clear: float;
+}
+
+div#left {
+    width: 200px;
+    min-height: inherit;
+    background: #dddddd;
+    float: left;
+}
+
+div#right {
+    width: 300px;
+    float: right;
+}
+
+div#row {
+    width: 100%;
+    min-height: 30px;
+}
