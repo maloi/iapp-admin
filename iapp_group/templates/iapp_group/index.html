@@ -29,7 +29,7 @@
             {% for uid in groups.memberUid %}
                 {% for user in users %}
                     {% if uid == user.uid %}
-                        <li><a href='/user/{{ user.uid }}'>{{ user.cn }} {{ user.uid }}</a></li>
+                        <li><a href='/user/{{ user.uid }}'>{{ user.givenName}} {{ user.sn }}</a></li>
                     {% endif %}
                 {% endfor %}
             {% endfor %}
