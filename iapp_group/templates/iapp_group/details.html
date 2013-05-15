@@ -13,7 +13,7 @@
             <div id='row'><b>{{ group.gidNumber }}</b></div>
             <div id='row'><ul>
                 {% for member in members %}
-                   <li><a href='/user/{{ member.uid }}'>{{ member.cn }} {{ member.uid }}</a></li>
+                   <li><a href='/user/{{ member.uid }}'>{{ member.sn }}, {{ member.givenName }}</a></li>
                 {% endfor %}
             </ul></div>
         </div>

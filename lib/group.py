@@ -1,5 +1,6 @@
 from ldapiapp import LdapIapp
 from django.conf import settings
+import re
 
 class Group():
     
@@ -12,10 +13,15 @@ class Group():
     @staticmethod
     def all(attributes = []):
         groups = []
+        system_groups = []
         ldap = LdapIapp()
         search_result = ldap.getEntries(settings.LDAP_GROUP_DN, '(cn=*)', attributes)
         for group in search_result:
-            groups.append(group_from_ldap(group, attributes))
+            # schiebt windowssystem gruppen ins abseits, regex sollte verbessert werden, ggf. anderes ausschlusskriterium
+            if re.match(r'^[A-Z]', group['cn'][0]):
+                system_groups.append(group_from_ldap(group, attributes))
+            else:
+                groups.append(group_from_ldap(group, attributes))
         return groups
 
     @staticmethod
