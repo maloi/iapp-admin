@@ -10,9 +10,12 @@ def index(request):
     return render(request, 'iapp_group/index.html', context)
 
 def group(request, cn):
-    groups = Group.get_by_cn(cn, ['cn', 'gidNumber', 'memberUid'])
-    users = User.all(['uid', 'cn'])
-    context = {'groups' : groups,
-                    'users' : users,
-                    }
-    return render(request, 'iapp_group/index.html', context)
+    group = Group.get_by_cn(cn, ['cn', 'gidNumber', 'memberUid'])
+    members = []
+    for memberUid in group.memberUid:
+        members.append(User.get_by_uid(memberUid, ['cn', 'uid']))
+    context = {
+              'group': group,
+              'members': members,
+              }
+    return render(request, 'iapp_group/details.html', context)

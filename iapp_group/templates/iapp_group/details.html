@@ -1,0 +1,22 @@
+{% load staticfiles %}
+<link rel='stylesheet' type='text/css' href='{% static "iapp_group/style.css" %}' />
+
+<div>
+    <div id='main'>
+        <div id='left'>
+            <div id='row'><b>Gruppenname:</b></div>
+            <div id='row'><b>Gruppennummer:</b></div>
+            <div id='row'><b>Mitglieder: </b></div>
+        </div>
+        <div id='right'>
+            <div id='row'><b>{{ group.cn }}</b></div>
+            <div id='row'><b>{{ group.gidNumber }}</b></div>
+            <div id='row'><ul>
+                {% for member in members %}
+                   <li><a href='/user/{{ member.uid }}'>{{ member.cn }} {{ member.uid }}</a></li>
+                {% endfor %}
+            </ul></div>
+        </div>
+    </div>
+    <a href='/group/'>zur&uuml;ck</a>
+</div>
