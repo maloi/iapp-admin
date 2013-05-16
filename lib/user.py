@@ -29,7 +29,7 @@ class User():
         return user_from_ldap(user, attributes)
 
     def showable_attrs(self):
-        return [attr for attr in self.all_fields if attr not in self.PRIVATE_ATTRS]
+        return set(self.all_fields) - set(self.PRIVATE_ATTRS)
 
 def user_from_ldap(search_result, attributes):
     kwargs = {}
