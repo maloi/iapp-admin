@@ -3,7 +3,7 @@ from django.conf import settings
 
 class User():
 
-    MULTIVALUE_ATTRS = ['objectclass']
+    MULTIVALUE_ATTRS = ['objectClass']
 
     def __init__(self, *args, **kwargs):
         setattr(self, 'all_fields', [])

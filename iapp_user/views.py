@@ -9,7 +9,6 @@ def index(request):
 
 def detail(request, uid):
     user = User.get_by_uid(uid)
-    import pprint; pprint.pprint(user.all_fields)
     context = {'user': user}
     return render(request, 'iapp_user/detail.html', context)
 

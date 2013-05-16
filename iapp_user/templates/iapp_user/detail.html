@@ -3,7 +3,14 @@
 <ul>
 {% for attr in user.all_fields %}
   <li>
-    <label>{{ attr }}: </label><span class="{{ attr }}">{{ user|get_attr:attr }}</span>
+  <label>{{ attr }}: </label>
+  <span class="{{ attr }}">
+    {% if attr in user.MULTIVALUE_ATTRS %}
+      {{ user|get_attr:attr|join:", " }}
+    {% else %}
+      {{ user|get_attr:attr }}
+    {% endif %}
+  </span>
   </li>
 {% endfor %}
 </ul>
