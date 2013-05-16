@@ -28,6 +28,8 @@ class User():
         user = search_result[0]
         return user_from_ldap(user, attributes)
 
+    def showable_attrs(self):
+        return [attr for attr in self.all_fields if attr not in self.PRIVATE_ATTRS]
 
 def user_from_ldap(search_result, attributes):
     kwargs = {}

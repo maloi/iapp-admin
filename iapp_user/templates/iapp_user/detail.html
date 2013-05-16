@@ -1,7 +1,7 @@
 {% load custom_filter %}
 <a href="{% url 'user_edit' user.uid %}"><button>Edit</button></a>
 <ul>
-{% for attr in attr_list %}
+{% for attr in user.showable_attrs %}
   <li id="{{ attr }}">
   <label>{{ attr }}: </label>
   <span class="{{ attr }}">
