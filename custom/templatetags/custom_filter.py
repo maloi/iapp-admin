@@ -1,5 +1,6 @@
 # from http://stackoverflow.com/a/1112236
 import re
+import base64
 from django import template
 from django.conf import settings
 
@@ -19,3 +20,7 @@ def get_attr(value, arg):
   else:
     return settings.TEMPLATE_STRING_IF_INVALID
 
+@register.filter
+def get_image(value):
+  """Gets an picture of a user"""
+  return base64.b64encode(value)

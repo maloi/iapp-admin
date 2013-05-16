@@ -2,13 +2,17 @@
 <a href="{% url 'user_edit' user.uid %}"><button>Edit</button></a>
 <ul>
 {% for attr in user.all_fields %}
-  <li>
+  <li id="{{ attr }}">
   <label>{{ attr }}: </label>
   <span class="{{ attr }}">
     {% if attr in user.MULTIVALUE_ATTRS %}
       {{ user|get_attr:attr|join:", " }}
     {% else %}
-      {{ user|get_attr:attr }}
+      {% if attr == 'jpegPhoto' %}
+        <img src="data:image/jpeg;base64,{{ user|get_attr:'jpegPhoto'|get_image }}">
+      {% else %}
+        {{ user|get_attr:attr }}
+      {% endif %}
     {% endif %}
   </span>
   </li>
