@@ -3,11 +3,14 @@ from django.conf import settings
 
 class User():
 
-    MULTIVALUE_ATTRS = ['objectclass']
+    MULTIVALUE_ATTRS = ['objectClass']
+    PRIVATE_ATTRS = ['userPassword', 'sambaLMPassword', 'sambaNTPassword']
 
     def __init__(self, *args, **kwargs):
+        setattr(self, 'all_fields', [])
         for key, value in kwargs.items():
             setattr(self, key, value)
+            self.all_fields.append(key)
 
     @staticmethod
     def all(attributes = []):
@@ -25,6 +28,8 @@ class User():
         user = search_result[0]
         return user_from_ldap(user, attributes)
 
+    def showable_attrs(self):
+        return set(self.all_fields) - set(self.PRIVATE_ATTRS)
 
 def user_from_ldap(search_result, attributes):
     kwargs = {}
