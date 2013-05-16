@@ -6,8 +6,10 @@ class User():
     MULTIVALUE_ATTRS = ['objectclass']
 
     def __init__(self, *args, **kwargs):
+        setattr(self, 'all_fields', [])
         for key, value in kwargs.items():
             setattr(self, key, value)
+            self.all_fields.append(key)
 
     @staticmethod
     def all(attributes = []):

@@ -1,19 +1,22 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 
 from lib.user import User
 
 def index(request):
-    users = User.all(['cn','uid'])
-    output = ''
-    for user in users:
-        output += user.uid + ' '
-        #if hasattr(user, 'cn'):
-        output += user.cn + '<br>'
-    return HttpResponse(output)
+    users = User.all(['cn','uid', 'uidNumber'])
+    context = {'users': users}
+    return render(request, 'iapp_user/index.html', context)
 
-def user(request, uid):
-    user = User.get_by_uid(uid, ['cn', 'uid', 'uidNumber'])
-    user2 = User.get_by_uid(uid)
-    output = user.uid + ' ' + user.cn + ' ' + user.uidNumber
-    output2 = user2.uid + ' ' + user2.cn + ' ' + user2.gidNumber
-    return HttpResponse(output + '<br>' + output2)
+def detail(request, uid):
+    user = User.get_by_uid(uid)
+    import pprint; pprint.pprint(user.all_fields)
+    context = {'user': user}
+    return render(request, 'iapp_user/detail.html', context)
+
+def edit(request, uid=None):
+    if uid == None:
+        user = User()
+    else:
+        user = User.get_by_uid(uid)
+    context = {'user': user}
+    return render(request, 'iapp_user/edit.html', context)

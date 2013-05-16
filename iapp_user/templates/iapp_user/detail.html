@@ -1,0 +1,11 @@
+{% load custom_filter %}
+<a href="{% url 'user_edit' user.uid %}"><button>Edit</button></a>
+<ul>
+{% for attr in user.all_fields %}
+  <li>
+    <label>{{ attr }}: </label><span class="{{ attr }}">{{ user|get_attr:attr }}</span>
+  </li>
+{% endfor %}
+</ul>
+<a href="{% url 'user_edit' user.uid %}"><button>Edit</button></a>
+
