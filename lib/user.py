@@ -4,6 +4,7 @@ from django.conf import settings
 class User():
 
     MULTIVALUE_ATTRS = ['objectClass']
+    PRIVATE_ATTRS = ['userPassword', 'sambaLMPassword', 'sambaNTPassword']
 
     def __init__(self, *args, **kwargs):
         setattr(self, 'all_fields', [])

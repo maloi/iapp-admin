@@ -9,7 +9,9 @@ def index(request):
 
 def detail(request, uid):
     user = User.get_by_uid(uid)
-    context = {'user': user}
+    context = {'user': user,
+               'attr_list': [attr for attr in user.all_fields if attr not in user.PRIVATE_ATTRS],
+              }
     return render(request, 'iapp_user/detail.html', context)
 
 def edit(request, uid=None):
