@@ -32,15 +32,15 @@ class LdapIapp:
             
     # vorgefertigte suchanfragen
     def getPeople(self):
-        result = self.getEntries('ou=People,dc=iapp-intern,dc=de', 'uid=*', ['uid', 'cn'])
+        result = self.getEntries(settings.LDAP_USER_DN, 'uid=*', ['uid', 'cn'])
         return self.sortPeopleUid(result)
     
     def getPeopleInfo(self, uid):
-        result = self.getEntries('ou=People,dc=iapp-intern,dc=de', 'uid=' + uid, ['uid', 'cn'])
+        result = self.getEntries(settings.LDAP_USER_DN, 'uid=' + uid, ['uid', 'cn'])
         return result[0]
     
     def getMaillist(self):
-        entries = self.getEntries('ou=Mailinglists,dc=iapp-intern,dc=de', 'cn=*', ['cn', ])
+        entries = self.getEntries(settings.LDAP_MAILLIST_DN, 'cn=*', ['cn', ])
         list_entries = []
         for value in entries:
             list_entries.append(value['cn'][0])
@@ -48,7 +48,7 @@ class LdapIapp:
         return result
 
     def getMaillistInfo(self, list):
-        maillist = self.getEntries('ou=Mailinglists,dc=iapp-intern,dc=de', 'cn=' + list, ['cn', 'mail', 'owner', 'member'])
+        maillist = self.getEntries(settings.LDAP_MAILLIST_DN, 'cn=' + list, ['cn', 'mail', 'owner', 'member'])
         peoples = self.getPeople()
         result = {'owner' : [], 'members' : []}
         for k, v in maillist[0].items():
