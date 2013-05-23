@@ -1,13 +1,20 @@
-{% load staticfiles %}
-<link rel='stylesheet' type='text/css' href='{% static "iapp_group/style.css" %}' />
+{% extends 'base.html' %}
 
+{% load staticfiles %}
+
+{% block css %}
+<link rel='stylesheet' type='text/css' href='{% static "iapp_group/style.css" %}' />
+{% endblock css %}
+
+{% block content %}
 <div id='liste'>
     <h1>Gruppen&uuml;bersicht</h1>
     <ul>
         {% for group in all_group %}
-            <li><a href='/group/{{ group.cn }}/'>{{ group.cn }}</a></li>
+        <li><a href="{% url 'group_details' group.cn %}">{{ group.cn }}</a></li>
         {% endfor %}
     </ul>
 </div>
 <div id='info_group'>
 </div>
+{% endblock content %}

@@ -119,6 +119,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_URL = '/'
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -129,6 +131,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
+    'django_extensions',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'iapp_admin',

@@ -1,6 +1,12 @@
-{% load staticfiles %}
-<link rel='stylesheet' type='text/css' href='{% static "iapp_group/style.css" %}' />
+{% extends 'base.html' %}
 
+{% load staticfiles %}
+
+{% block css %}
+<link rel='stylesheet' type='text/css' href='{% static "iapp_group/style.css" %}' />
+{% endblock css %}
+
+{% block content %}
 <div>
     <div id='main'>
         <div id='left'>
@@ -13,10 +19,11 @@
             <div id='row'><b>{{ group.gidNumber }}</b></div>
             <div id='row'><ul>
                 {% for member in members %}
-                   <li><a href='/user/{{ member.uid }}'>{{ member.sn }}, {{ member.givenName }}</a></li>
+                <li><a href="{% url 'user_details' member.uid %}">{{ member.sn }}, {{ member.givenName }}</a></li>
                 {% endfor %}
             </ul></div>
         </div>
     </div>
-    <a href='/group/'><button>zur&uuml;ck</button></a> <a href='/group/edit/{{ group.cn }}'><button>edit</button></a>
+    <a href='/group/'><button>zur&uuml;ck</button></a> <a href="{% url 'group_edit' group.cn %}"><button>edit</button></a>
 </div>
+{% endblock content %}
