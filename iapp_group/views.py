@@ -22,3 +22,9 @@ def group(request, cn, sortierer='sn'):
               'members': sorted_members,
               }
     return render(request, 'iapp_group/details.html', context)
+    
+def group_edit(request, cn):
+    group = Group.get_by_cn(cn, ['cn', 'gidNumber', 'memberUid'])
+    user = User.all(['uid', 'givenName', 'sn'])
+    context = {'group_edit' : group}
+    return render(request, 'iapp_group/edit.html', context)

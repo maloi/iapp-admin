@@ -35,7 +35,6 @@ class Group():
         group = search_result[0]
         return group_from_ldap(group, attributes)
 
-
 def group_from_ldap(search_result, attributes):
     kwargs = {}
     get_all = False

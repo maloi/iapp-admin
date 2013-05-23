@@ -1,7 +1,7 @@
 import ldap
 from django.conf import settings
 
-class LdapIapp:
+class LdapIapp(object):
     def __init__(self):
         self.ip = settings.AUTH_LDAP_SERVER_URI
         self.binddn = settings.AUTH_LDAP_BIND_DN
@@ -18,18 +18,28 @@ class LdapIapp:
         
     def __del__(self):
         self.lcon.unbind()
-     
+
     # allgemeingueltige suche, angabe aller parameter bei aufruf
     def getEntries(self, basedn, filters, attributes):
-        try:
-            r = self.lcon.search_s(basedn, self.scope, filters, attributes)
-            result = []
+        r = self.lcon.search_s(basedn, self.scope, filters, attributes)
+        result = []
+        fehler = ['noMatchFoundFor ' + filters, ]
+        # prueft auf leeres ergebnis, falls wahr liefert uid der person zurueck
+        if not r:
+            f = {}
+            for i in range(0,len(attributes)):
+                key = attributes[i]
+                if i == 0:
+                    f.update({attributes[i] : fehler})
+                else:
+                    f.update({attributes[i] : [filters, ]})
+            result.append(f)
+            return result
+        else:
             for values in r:
                 result.append(values[1])
             return result
-        except ldap.LDAPError as e:
-            return e
-            
+
     # vorgefertigte suchanfragen
     def getPeople(self):
         result = self.getEntries(settings.LDAP_USER_DN, 'uid=*', ['uid', 'cn'])
@@ -86,4 +96,4 @@ class LdapIapp:
             else:
                 continue
         return result
-        
+
