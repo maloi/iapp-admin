@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% load custom_filter %}
+
+{% block content %}
+<a href="{% url 'user_edit' iapp_user.uid %}"><button>Edit</button></a>
+<ul>
+{% for attr in iapp_user.showable_attrs %}
+  <li id="{{ attr }}">
+  <label>{{ attr }}: </label>
+  <span class="{{ attr }}">
+    {% if attr in iapp_user.MULTIVALUE_ATTRS %}
+      {{ iapp_user|get_attr:attr|join:", " }}
+    {% else %}
+      {% if attr == 'jpegPhoto' %}
+        <img src="data:image/jpeg;base64,{{ iapp_user|get_attr:'jpegPhoto'|get_image }}">
+      {% else %}
+        {{ iapp_user|get_attr:attr }}
+      {% endif %}
+    {% endif %}
+  </span>
+  </li>
+{% endfor %}
+</ul>
+<a href="{% url 'user_edit' iapp_user.uid %}"><button>Edit</button></a>
+{% endblock content %}
+

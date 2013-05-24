@@ -9,16 +9,18 @@ def index(request):
     context = {'users': users}
     return render(request, 'iapp_user/index.html', context)
 
-def detail(request, uid):
-    user = User.get_by_uid(uid)
-    context = {'user': user,
+@login_required
+def details(request, uid):
+    iapp_user = User.get_by_uid(uid)
+    context = {'iapp_user': iapp_user,
               }
-    return render(request, 'iapp_user/detail.html', context)
+    return render(request, 'iapp_user/details.html', context)
 
+@login_required
 def edit(request, uid=None):
     if uid == None:
-        user = User()
+        iapp_user = User()
     else:
-        user = User.get_by_uid(uid)
-    context = {'user': user}
+        iapp_user = User.get_by_uid(uid)
+    context = {'iapp_user': iapp_user}
     return render(request, 'iapp_user/edit.html', context)

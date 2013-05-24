@@ -1,14 +1,5 @@
-<a href="{% url 'user_new' %}"><button>New</button></a>
-<ul>
-{% for user in users %}
-  <li>
-  <a href="{% url 'user_detail' user.uid %}">
-      <span class="fullname">{{ user.cn }}</span>
-      <span class="uid">{{ user.uid }}</span>
-      <span class="uidNumber">{{ user.uidNumber }}</span>
-    </a>
-    <a href="{% url 'user_edit' user.uid %}"><button>Edit</button></a>
-  </li>
-{% endfor %}
-</ul>
+{% extends 'base.html' %}
+
+{% block content %}
+{% endblock content %}
 
