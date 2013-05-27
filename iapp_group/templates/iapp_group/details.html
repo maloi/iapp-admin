@@ -19,7 +19,11 @@
             <div id='row'><b>{{ group.gidNumber }}</b></div>
             <div id='row'><ul>
                 {% for member in members %}
-                <li><a href="{% url 'user_details' member.uid %}">{{ member.sn }}, {{ member.givenName }}</a></li>
+                {% if member.former_member %}
+                  <li><a href="#">{{ member.uid }}</a>*</li>
+                {% else %}
+                  <li><a href="{% url 'user_details' member.uid %}">{{ member.sn }}, {{ member.givenName }}</a></li>
+                {% endif %}
                 {% endfor %}
             </ul></div>
         </div>
