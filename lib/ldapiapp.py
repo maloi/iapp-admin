@@ -22,23 +22,12 @@ class LdapIapp(object):
     # allgemeingueltige suche, angabe aller parameter bei aufruf
     def getEntries(self, basedn, filters, attributes):
         r = self.lcon.search_s(basedn, self.scope, filters, attributes)
-        result = []
-        fehler = ['noMatchFoundFor ' + filters, ]
-        # prueft auf leeres ergebnis, falls wahr liefert uid der person zurueck
         if not r:
-            f = {}
-            for i in range(0,len(attributes)):
-                key = attributes[i]
-                if i == 0:
-                    f.update({attributes[i] : fehler})
-                else:
-                    f.update({attributes[i] : [filters, ]})
-            result.append(f)
-            return result
-        else:
-            for values in r:
-                result.append(values[1])
-            return result
+            return None
+        result = []
+        for values in r:
+            result.append(values[1])
+        return result
 
     # vorgefertigte suchanfragen
     def getPeople(self):
@@ -96,4 +85,23 @@ class LdapIapp(object):
             else:
                 continue
         return result
+
+
+def entry_from_ldap(entry, search_result, attributes):
+    kwargs = {}
+    get_all = False
+    if len(attributes) == 0:
+        get_all = True
+    for key, value in search_result.items():
+        if not key in entry.MULTIVALUE_ATTRS:
+            value = value[0]
+        if not get_all and key in attributes:
+            kwargs[key] = value
+            attributes = [x for x in attributes if x != key]
+        else:
+            kwargs[key] = value
+        for key in attributes:
+            kwargs[key] = ''
+    return entry(**kwargs)
+
 

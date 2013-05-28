@@ -14,12 +14,20 @@ def index(request):
     return render(request, 'iapp_group/index.html', context)
 
 @login_required
-def group(request, cn, sortierer='sn'):
+def group(request, cn, sort_by='sn'):
     group = Group.get_by_cn(cn, ['cn', 'gidNumber', 'memberUid'])
     members = []
     for memberUid in group.memberUid:
-        members.append(User.get_by_uid(memberUid, ['uid', 'givenName', 'sn']))
-    sorted_members = sorted(members, key=attrgetter(sortierer))
+        user = User.get_by_uid(memberUid, ['uid', 'givenName', 'sn'])
+        if not user:
+            kwargs = {}
+            kwargs['uid'] = memberUid
+            kwargs['givenName'] = ''
+            kwargs['sn'] = ''
+            kwargs['former_member'] = True
+            user = User(**kwargs)
+        members.append(user)
+    sorted_members = sorted(members, key=attrgetter(sort_by))
     context = {
               'group': group,
               'members': sorted_members,
