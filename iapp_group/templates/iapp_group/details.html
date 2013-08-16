@@ -12,11 +12,15 @@
         <div id='left'>
             <div id='row'><b>Gruppenname:</b></div>
             <div id='row'><b>Gruppennummer:</b></div>
+            <div id='row'><b>Besitzer:</b></div>
+	    <div id='row'><b>Beschreibung:</b></div>
             <div id='row'><b>Mitglieder: </b></div>
         </div>
         <div id='right'>
             <div id='row'><b>{{ group.cn }}</b></div>
             <div id='row'><b>{{ group.gidNumber }}</b></div>
+            <div id='row'>{{ owner }}</div>
+	    <div id='row'>{{ description }}</div>
             <div id='row'><ul>
                 {% for member in members %}
                 {% if member.former_member %}
@@ -28,6 +32,10 @@
             </ul></div>
         </div>
     </div>
-    <a href='/group/'><button>zur&uuml;ck</button></a> <a href="{% url 'group_edit' group.cn %}"><button>edit</button></a>
+    <a href='/group/'><button>zur&uuml;ck</button></a>
+    {% if owner == user.username %}
+        <a href="{% url 'group_edit' group.cn %}"><button>bearbeiten</button></a>
+    {% endif%}
+    <a href="{% url 'group_edit' group.cn %}"><button>bearbeiten</button></a>
 </div>
 {% endblock content %}

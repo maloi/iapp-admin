@@ -34,4 +34,12 @@ class Group():
         search_result = ldap.getEntries(settings.LDAP_GROUP_DN, 'cn={0}'.format(cn), attributes)
         group = search_result[0]
         return entry_from_ldap(Group, group, attributes)
-
+    
+    @staticmethod
+    def write_ldif(cn, old, new):
+        ldap = LdapIapp()
+        if ldap.setEntries("cn=" + cn + "," + settings.LDAP_GROUP_DN , old, new):
+            result = True
+        else:
+            result = False
+        return result

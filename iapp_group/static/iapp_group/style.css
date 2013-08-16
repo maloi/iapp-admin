@@ -19,7 +19,7 @@ li {
 }
 
 div#main {
-    width: 500px;
+    width: 800px;
     min-height: 500px;
     clear: float;
 }
@@ -28,6 +28,12 @@ div#left {
     width: 200px;
     min-height: inherit;
     background: #dddddd;
+    float: left;
+}
+
+div#center {
+    width: 300px;
+    min-height: inherit;
     float: left;
 }
 

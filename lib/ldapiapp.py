@@ -1,4 +1,5 @@
 import ldap
+import ldap.modlist
 from django.conf import settings
 
 class LdapIapp(object):
@@ -11,7 +12,7 @@ class LdapIapp(object):
         
         try:
             self.lcon = ldap.initialize(self.ip)
-            self.lcon.simple_bind(self.binddn, self.bindpw)
+            self.lcon.simple_bind_s(self.binddn, self.bindpw)
             self.lcon.protocol_version = self.ldapvers
         except ldap.LDAPError as e:
             return e
@@ -28,6 +29,13 @@ class LdapIapp(object):
         for values in r:
             result.append(values[1])
         return result
+    
+    # schreibt neuen Wert in LDAP
+    def setEntries(self, dn, old, new):
+        ldif = ldap.modlist.modifyModlist(old, new)
+        self.lcon.modify_s(dn, ldif)
+        return True
+        
 
     # vorgefertigte suchanfragen
     def getPeople(self):
